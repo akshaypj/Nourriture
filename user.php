@@ -52,15 +52,15 @@ body{
 
 <body>
 	<div id="header"></div>
-	<form method="POST">
-		<div id="form" class="col-lg-9">
+	<form method="POST" name="myform">
+		<div id="form"  class="col-lg-9">
 		<div id="success_message" name="success_message"></div>
 		<table id="provider_info">
 			<tr>
 				<td class="info_parameter">Provider:</td>
 				<td><select id="who" name="whoinuser">
 					  <?php
-							  $servername = "localhost";
+							$servername = "localhost";
 							$username = "root";
 							$password = "";
 							$dbname = "test";
@@ -79,7 +79,7 @@ body{
 			<tr>
 				<td class="info_parameter">Food Type:</td>
 				<td><input type="text" id="what" name="whatinuser"></td>
-			</tr>
+			</tr>.
 			<tr>	
 				<td class="info_parameter">Quantity:</td>
 				<td><input type="text" id="how_much" name="how_muchinuser"></td>
@@ -118,8 +118,19 @@ if (isset($_POST['Submit'])){
 						$dates=$_POST['datesinuser'];
 						$query3="INSERT INTO example(provider,foodtype,quantity,description,dates) VALUES('$nam','$foodtype','$quant','$desc','$dates')";
 						$result3 = mysqli_query($conn,$query3);
-						//echo '<div class="success_message">' ." record inserted" . '</div>';
+						
 					}
 ?>
-					
+<script type="text/javascript">
+	
+function validateForm() {
+    var x = document.forms["myform"]["whatinuser"].value;
+    console.log(x);
+    if (x == null || x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+
+</script>					
 </html>
