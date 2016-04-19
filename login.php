@@ -32,7 +32,7 @@ body{
 	margin: 0px 0px 20px 0px;
 }
 
-#password_span, #name_span{
+#password_span, #name_span, #captcha_span{
 	font-family: -webkit-body;
     font-size: 18px;
 }
@@ -135,16 +135,6 @@ body{
 	background-color: white;
 }
 
-.header-background{
-	padding: 2%;
-	color: gray;
-	font-family: Oswald,Helvetica,sans-serif;
-	background-color: #45bbe6;
-	font-weight: 700;
-	font-style: bold;
-	font-size: 40px;
-}
-
 .formatText{
     font-weight: 700;
     font-size: 16px;
@@ -173,6 +163,30 @@ body{
 	height: 50px;
 	margin-bottom: 40px;	
 	outline: none;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+
+/*Header Format - Lavina Advani*/
+.header-background{
+	padding: 1% 2%;
+	color: #2B4A56;
+	font-family: Oswald,Helvetica,sans-serif;
+	background-color: #78CEED;
+	font-weight: 700;
+	font-style: bold;
+	font-size: 40px;
+}
+
+.headerFont{
+	font-size: 70px;
+}
+.headerSubFont{
+	font-size: 20px;
+}
+h5, h1 {
+    display: inline-block;
 }
 
 </style>
@@ -209,7 +223,7 @@ body{
 	<header>
         <div id="main-container">
         	<div id="backg" class="header-background">
-        	<h2><b><i>Nourriture</i></b> | The track to an ideal deed</h2>
+        	<h1 class="headerFont"><b><i>Nourriture</i></b> </h1><h5 class="headerSubFont">   &nbsp; &nbsp;  The track to an ideal deed...</h5>
 			</div>
         </div>
     </header>
@@ -240,18 +254,20 @@ body{
 							<input class= "formatInput" type="textbox" id="admin_password_input" name="admin_password">
 						</div>
 
-						<div>
-							Enter Image Text
-							<input name="captcha" type="text">
-							<img src="captcha.php" /><br>
+						<div id ="cap">
+							<div class="formatText" id="captcha_span">Enter Image Text: </div>
+							<input class= "formatInput" name="captcha" type="textbox">
+							<br>
+							<br>
+							<img style="float: right;" src="captcha.php" /><br>
 						</div>
 
 						<div id="submitHolder">
-							<input id ="admin_submit_button" type="submit" name="Submit1" value="Login">
+							<input id ="admin_submit_button" type="submit" name="Submit1" value="LOGIN">
 						</div> 
 					</form>
 					<?php
-						if (isset($_POST['Submit1'])){ //If it is the first time, it does nothing  
+						if (isset($_POST['Submit1'])){ //If it is the first time, it does nothing  rgba(69, 187, 230, 0.72); 0.64
 							sel2();
 						}
 
@@ -312,14 +328,16 @@ body{
 							<input class= "formatInput" type="textbox" id="member_password_input" name="member_password">
 						</div>
 						
-						<div>
-							Enter Image Text
-							<input name="captcha" type="text">
-							<img src="captcha.php" /><br>
+						<div id ="cap">
+							<div class="formatText" id="captcha_span">Enter Image Text: </div>
+							<input class= "formatInput" name="captcha" type="textbox">
+							<br>
+							<br>
+							<img style="float: right;" src="captcha.php" /><br>
 						</div>
 
 						<div id="submitHolder">
-							<input id ="member_submit_button" type="submit" name="Submit2" value="Login">
+							<input id ="member_submit_button" type="submit" name="Submit2" value="LOGIN">
 						</div> 
 					</form>
 
