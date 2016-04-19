@@ -209,7 +209,7 @@ body{
 	<header>
         <div id="main-container">
         	<div id="backg" class="header-background">
-        	Nourriture
+        	<h2><b><i>Nourriture</i></b> | The track to an ideal deed</h2>
 			</div>
         </div>
     </header>
@@ -239,10 +239,65 @@ body{
 							<div class="formatText"  id ="password_span">Password: </div>
 							<input class= "formatInput" type="textbox" id="admin_password_input" name="admin_password">
 						</div>
+
+						<div>
+							Enter Image Text
+							<input name="captcha" type="text">
+							<img src="captcha.php" /><br>
+						</div>
+
 						<div id="submitHolder">
 							<input id ="admin_submit_button" type="submit" name="Submit1" value="Login">
 						</div> 
 					</form>
+					<?php
+						if (isset($_POST['Submit1'])){ //If it is the first time, it does nothing  
+							sel2();
+						}
+
+						function sel2(){
+							$myusername=$_POST['admin_username']; 
+							$mypassword=$_POST['admin_password']; 
+								if(empty($myusername) || empty($mypassword)){
+									echo "You did not fill out the required fields.";
+								}
+								else{
+									$user = 'root';
+									$password = 'root';
+									$db = 'test';
+									$host = 'localhost';
+									$port = 8889;
+
+									$link = mysqli_init();
+									$success = mysqli_real_connect(
+									   $link, 
+									   $host, 
+									   $user, 
+									   $password, 
+									   $db,
+									   $port
+									);
+				 			
+									$query  = "SELECT * FROM credential WHERE username = '$myusername' and password = '$mypassword'";
+									$result = mysqli_query($link, $query);
+
+									if(!$result){
+				    					die('There was an error running the query [' . $dbb->error . ']');
+									}else{
+										$count =  mysqli_num_rows($result);
+										if($count==1){
+									// Register $myusername, $mypassword and redirect to file "login_success.php"
+											$_SESSION['username'] = $myusername; 
+											$_SESSION['password'] =  $mypassword;
+											echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";	
+										}else {
+											echo "Wrong Username or Password, try again";
+								}
+							}
+								$mysqli->close();
+						}		
+					}
+				?>
 				</div>
 
 				<div id="credentials_member" class="contentDiv inactive">
@@ -295,13 +350,7 @@ body{
 									   $port
 									);
 				 			
-									if($_POST['identity']=="user")
-										$tbl_name="user";
-									else
-										$tbl_name="credential";
-							
-								
-									$query  = "SELECT * FROM $tbl_name WHERE username = '$myusername' and password = '$mypassword'";
+									$query  = "SELECT * FROM user WHERE username = '$myusername' and password = '$mypassword'";
 									$result = mysqli_query($link, $query);
 
 									if(!$result){
@@ -310,24 +359,16 @@ body{
 										$count =  mysqli_num_rows($result);
 										if($count==1){
 									// Register $myusername, $mypassword and redirect to file "login_success.php"
-									$_SESSION['username'] = $myusername; 
-									$_SESSION['password'] =  $mypassword;
-								
-									//echo "correct Username and Password";
-									if($_POST['identity']=="user"){
-										echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
-									}	
-									else{
-										echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";
-									}	
-							}else {
-									echo "Wrong Username or Password, try again";
+											$_SESSION['username'] = $myusername; 
+											$_SESSION['password'] =  $mypassword;
+											echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
+										}else {
+											echo "Wrong Username or Password, try again";
+								}
 							}
-						}
 								$mysqli->close();
 						}		
 					}
-
 				?>
 				</div>
 			</div>
