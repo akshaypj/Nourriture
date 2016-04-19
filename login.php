@@ -262,7 +262,7 @@ body{
 							<input name="captcha" type="text">
 							<img src="captcha.php" /><br>
 						</div>
-						
+
 						<div id="submitHolder">
 							<input id ="member_submit_button" type="submit" name="Submit2" value="Login">
 						</div> 
@@ -302,15 +302,12 @@ body{
 							
 								
 									$query  = "SELECT * FROM $tbl_name WHERE username = '$myusername' and password = '$mypassword'";
-									echo $query;
 									$result = mysqli_query($link, $query);
 
 									if(!$result){
 				    					die('There was an error running the query [' . $dbb->error . ']');
 									}else{
-										echo "hiiiiii";
 										$count =  mysqli_num_rows($result);
-										echo $count;
 										if($count==1){
 									// Register $myusername, $mypassword and redirect to file "login_success.php"
 									$_SESSION['username'] = $myusername; 
