@@ -102,108 +102,66 @@ body{
 		</div>
 	</form>
 	<?php
-	if (isset($_POST['Submit'])){ //If it is the first time, it does nothing  
-		//echo "hi"; 
-		sel();
+		if (isset($_POST['Submit'])){ //If it is the first time, it does nothing  
+			sel();
 		}
-	function sel(){
-		//echo "hi"; 
-		$myusername=$_POST['username']; 
-		$mypassword=$_POST['password']; 
-		if(empty($myusername) || empty($mypassword)){
-			echo "You did not fill out the required fields.";
-		}
-		else{
-			$user = 'root';
-			$password = 'root';
-			$db = 'test';
-			$host = 'localhost';
-			$port = 8889;
+		function sel(){
+			$myusername=$_POST['username']; 
+			$mypassword=$_POST['password']; 
 
-			DEFINE('DB_USERNAME', 'root');
-			DEFINE('DB_PASSWORD', 'root');
-			DEFINE('DB_HOST', 'localhost');
-			DEFINE('DB_DATABASE', 'test');
-
-			$dbb = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
- 			if (mysqli_connect_error()) {
-  				die('Connect Error ('.mysqli_connect_errno().') '.mysqli_connect_error());
- 			}
-
-			if($_POST['identity']=="user")
-				$tbl_name="user";
-			else
-				$tbl_name="credential";
-			
-			$sql = <<<SQL
-    SELECT *
-    FROM $tbl_name
-    WHERE username = "$myusername" and password = "$mypassword"
-SQL;
-			
-			$result = $dbb->query($sql);
-			if(!$result){
-    			die('There was an error running the query [' . $dbb->error . ']');
-				}else{
-					$count =  mysqli_num_rows($result);
-					if($count==1){
-				// Register $myusername, $mypassword and redirect to file "login_success.php"
-				$_SESSION['username'] = $myusername; 
-				$_SESSION['password'] =  $mypassword;
-				
-				//echo "correct Username and Password";
-				if($_POST['identity']=="user"){
-					echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
-				}	
-				else{
-					echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";
-				}	
-			}else {
-			}
+				if(empty($myusername) || empty($mypassword)){
+					echo "You did not fill out the required fields.";
 				}
-				$mysqli->close();
-			 //$rs=$mysqli->query($sql);
-			// echo $rs;
-			 
+				else{
 
-			/*$link = mysqli_init();
-			WHERE 'username'='$myusername' and 'password'='$mypassword'
-			$success = mysqli_real_connect(
-			   $link, 
-			   $host, 
-			   $user, 
-			   $password, 
-			   $db,
-			   $port
-			);
-*/
-			/*$servername = "localhost";
-			$username = "root";
-			$password = "root";
-			$dbname = "test";*/
-	
-			//$conn = mysqli_connect($servername, $username, $password, $dbname);	
-			//$result = mysqli_query("SELECT * from '.$tbl_name' WHERE username='$myusername' and password='$mypassword'");
+					$user = 'root';
+					$password = 'root';
+					$db = 'test';
+					$host = 'localhost';
+					$port = 8889;
+
+					$link = mysqli_init();
+					$success = mysqli_real_connect(
+					   $link, 
+					   $host, 
+					   $user, 
+					   $password, 
+					   $db,
+					   $port
+					);
+ 					
+					if($_POST['identity']=="user")
+						$tbl_name="user";
+					else
+						$tbl_name="credential";
 			
-			//$rs=$conn->query($sql);
-			//$result=mysqli_query($link, $sql);
-			
-			//$count=mysqli_num_rows($stmt);
-			//echo $count+"hi";
-			/*if($count==1){
-				// Register $myusername, $mypassword and redirect to file "login_success.php"
-				$_SESSION['username'] = $myusername; 
-				$_SESSION['password'] =  $mypassword;
-				//echo "correct Username and Password";
-				if($_POST['identity']=="user")
-					header("location:user.php");
-				else
-					header("location:admin.php");
-			}*/
-			/*else {
-				//echo "Wrong Username or Password, try again";
-			}*/
+					$query  = "SELECT * FROM user WHERE username = '$myusername' and password = '$mypassword'";
+
+					$result = mysqli_query($link, $query);
+
+					if(!$result){
+    					die('There was an error running the query [' . $dbb->error . ']');
+					}else{
+						$count =  mysqli_num_rows($result);
+						echo $count;
+						if($count==1){
+					// Register $myusername, $mypassword and redirect to file "login_success.php"
+					$_SESSION['username'] = $myusername; 
+					$_SESSION['password'] =  $mypassword;
+				
+					//echo "correct Username and Password";
+					if($_POST['identity']=="user"){
+						echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
+					}	
+					else{
+						echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";
+					}	
+			}else {
+					echo "Wrong Username or Password, try again";
+			}
+			$mysqli->close();
+		}
+				
 		}		
 	}
 ?>	
