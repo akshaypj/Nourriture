@@ -50,49 +50,41 @@ body{
   <title>Nourriture</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<!--link rel="stylesheet" media="screen" type="text/css" href="/css/datepicker.css" />
-	<script type="text/javascript" src="/js/datepicker.js"></script-->
 </head>
 <body>
 	<div id="header"></div>
 	<form method="POST">
 		<div id="form" class="col-lg-9">
-		<div id="success_message" name="success_message"></div>
+		<div id="success_message" name="success_message"></div>  		    
 		<table id="provider_info">
 			<tr>
 				<td class="info_parameter">Provider:</td>
 				<td><select id="who" name="whoinuser">
-					<option value="
-			  		    <?php
-			  		    	echo "hi";
-							/*$user = 'root';
-							$password = 'root';
-							$db = 'test';
-							$host = 'localhost';
-							$port = 8889;
+					<?php
+						$user = 'root';
+						$password = 'root';
+						$db = 'test';
+						$host = 'localhost';
+						$port = 8889;
 
-							$link = mysqli_init();
-							$success = mysqli_real_connect(
-							   $link, 
-							   $host, 
-							   $user, 
-							   $password, 
-							   $db,
-							   $port
-							);
-			  		    	echo $success;
+						$link = mysqli_init();
+						$success = mysqli_real_connect(
+						   $link, 
+						   $host, 
+						   $user, 
+						   $password, 
+						   $db,
+						   $port
+						);
 
-							$query="SELECT companyName FROM providerCompany";
-							echo $query;
-							$result = mysqli_query($link, $query);
-							echo $result;
+						$query="SELECT companyName FROM providerCompany";
+						$result = mysqli_query($link, $query);
 
-							while ($row=mysqli_fetch_array($result)) {
-								$Nameselect=$row["Name"];
-								echo "<option value=$Nameselect> $Nameselect </option>";
-							}	*/
-						?>	"
-						></option>							
+						while ($row=mysqli_fetch_array($result)) {
+							$Nameselect=$row["companyName"];
+							echo "<option value=$Nameselect> $Nameselect </option>";
+						}
+					?>
 					</select>
 				</td>
 			</tr>
@@ -165,24 +157,23 @@ body{
 
 <?php
 if (isset($_POST['Submit'])){ 
-						Insert_Record_func();
-					}
-					
-					function Insert_Record_func(){
-						$servername = "localhost";
-						$username = "root";
-						$password = "";
-						$dbname = "test";
-						$conn = mysqli_connect($servername, $username, $password, $dbname);
-						$nam=$_POST['whoinuser'];
-						$foodtype=$_POST['whatinuser'];
-						$quant=$_POST['how_muchinuser'];
-						$desc=$_POST['descriptioninuser'];
-						$dates=$_POST['datesinuser'];
-						$query3="INSERT INTO example(provider,foodtype,quantity,description,dates) VALUES('$nam','$foodtype','$quant','$desc','$dates')";
-						$result3 = mysqli_query($conn,$query3);
-						//echo '<div class="success_message">' ." record inserted" . '</div>';
-					}
+			Insert_Record_func();
+		}
+		
+		function Insert_Record_func(){
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$dbname = "test";
+			$conn = mysqli_connect($servername, $username, $password, $dbname);
+			$nam=$_POST['whoinuser'];
+			$foodtype=$_POST['whatinuser'];
+			$quant=$_POST['how_muchinuser'];
+			$desc=$_POST['descriptioninuser'];
+			$dates=$_POST['datesinuser'];
+			$query3="INSERT INTO example(provider,foodtype,quantity,description,dates) VALUES('$nam','$foodtype','$quant','$desc','$dates')";
+			$result3 = mysqli_query($conn,$query3);
+		}
 ?>
 					
 </html>
