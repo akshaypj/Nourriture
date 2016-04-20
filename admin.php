@@ -258,10 +258,10 @@ hr{
 			</div>
 
 			<div id="userContent">
-				<form method="POST">
+				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
 					<div class = "user-details">
 					<span id = "insert_user_span">User Name:</span><input type="textbox" id="puser_name" name="user_name"><br>
-					<span id = "insert_user_span">Password: </span><input type="password" id="puser_pwd" name="user_name"><br>
+					<span id = "insert_user_span">Password: </span><input type="password" id="puser_pwd" name="user_pwd"><br>
 					<span><input type="submit" id="insert_submit" value="Insert" name="Insert_User"></span>
 					</div>		
 					<hr>
@@ -269,23 +269,86 @@ hr{
 					<div class = "user-details">
 					<span id = "insert_user_span">Select User: </span>
 						<select id="delete_who" name="delete_who">					
-						  <?php 
-								$servername = "localhost";
-								$username = "root";
-								$password = "";
-								$dbname = "test";
-								$conn = mysqli_connect($servername, $username, $password, $dbname);
-								$query="SELECT Name FROM sourcelist";
-								$result=mysqli_query($conn,$query);
-								while ($row=mysqli_fetch_array($result)) {
-									$Nameselect=$row["Name"];
-									echo "<option> $Nameselect </option>";
-									}		
-							?>
+						 <?php
+									$user = 'root';
+									$password = 'root';
+									$db = 'test';
+									$host = 'localhost';
+									$port = 8889;
+
+									$link = mysqli_init();
+									$success = mysqli_real_connect(
+									   $link, 
+									   $host, 
+									   $user, 
+									   $password, 
+									   $db,
+									   $port
+									);
+
+									$query="SELECT username FROM user";
+									$result = mysqli_query($link, $query);
+
+									while ($row=mysqli_fetch_array($result)) {
+										$Nameselect=$row["username"];
+										echo "<option value=$Nameselect> $Nameselect </option>";
+									}
+								?>
 					</select><br>
 					<input type="submit" id="delete_submit" value="Delete" name="Delete_User">
 				</div>
 				</form>
+				<?php
+						if (isset($_POST['Delete_User'])){ //If it is the first time, it does nothing  
+							del_func();
+						}else if(isset($_POST['Insert_User'])){
+							add_func();
+						}
+						function del_func(){
+							$myDeluser=$_POST['delete_who']; 
+							$user = 'root';
+							$password = 'root';
+							$db = 'test';
+							$host = 'localhost';
+							$port = 8889;
+
+							$link = mysqli_init();
+							$success = mysqli_real_connect(
+							   $link, 
+							   $host, 
+							   $user, 
+							   $password, 
+							   $db,
+							   $port
+							);
+		 			
+							$query  = "DELETE FROM user WHERE username = '$myDeluser'";
+							$result = mysqli_query($link, $query);
+						}
+
+						function add_func(){
+							$myAdduser=$_POST['user_name']; 
+							$myAdduserPwd=$_POST['user_pwd']; 
+							$user = 'root';
+							$password = 'root';
+							$db = 'test';
+							$host = 'localhost';
+							$port = 8889;
+
+							$link = mysqli_init();
+							$success = mysqli_real_connect(
+							   $link, 
+							   $host, 
+							   $user, 
+							   $password, 
+							   $db,
+							   $port
+							);
+		
+							$query  = "INSERT INTO user(username, password) VALUES('$myAdduser','$myAdduserPwd')";
+							$result = mysqli_query($link, $query);
+						}
+				?>
 			</div>
 
 			<div id="providerContent" class="inactive">
@@ -296,24 +359,90 @@ hr{
 
 					<hr>
 					<span id = "insert_user_span">Select Provider: </span>
-						<select id="delete_who" name="delete_who">
+						<select id="delete_who" name="delete_who_provider">
 						  <?php 
-								$servername = "localhost";
-								$username = "root";
-								$password = "";
-								$dbname = "test";
-								$conn = mysqli_connect($servername, $username, $password, $dbname);
-								$query="SELECT Name FROM sourcelist";
-								$result=mysqli_query($conn,$query);
-								while ($row=mysqli_fetch_array($result)) {
-									$Nameselect=$row["Name"];
-									echo "<option> $Nameselect </option>";
-									}		
+									$user = 'root';
+									$password = 'root';
+									$db = 'test';
+									$host = 'localhost';
+									$port = 8889;
+
+									$link = mysqli_init();
+									$success = mysqli_real_connect(
+									   $link, 
+									   $host, 
+									   $user, 
+									   $password, 
+									   $db,
+									   $port
+									);
+
+									$query="SELECT companyName FROM providerCompany";
+									$result = mysqli_query($link, $query);
+
+									while ($row=mysqli_fetch_array($result)) {
+										$Nameselect=$row["companyName"];
+										echo "<option value=$Nameselect> $Nameselect </option>";
+									}
 							?>
 					</select><br>
 					<input type="submit" id="delete_submit" value="Delete" name="Delete_Provider">
 					</div>
 				</form>
+				<?php
+						if (isset($_POST['Delete_Provider'])){ //If it is the first time, it does nothing  
+							del_func_provider();
+						}else if(isset($_POST['Insert_Provider'])){
+							add_func_provider();
+						}
+						function del_func_provider(){
+							$myDelprovider=$_POST['delete_who_provider']; 
+							$user = 'root';
+							$password = 'root';
+							$db = 'test';
+							$host = 'localhost';
+							$port = 8889;
+
+							$link = mysqli_init();
+							$success = mysqli_real_connect(
+							   $link, 
+							   $host, 
+							   $user, 
+							   $password, 
+							   $db,
+							   $port
+							);
+		 			
+							$query  = "DELETE FROM providerCompany WHERE companyName = '$myDelprovider'";
+							$result = mysqli_query($link, $query);
+						}
+
+						function add_func_provider(){
+							$myAddprovider=$_POST['provider_name']; 
+	
+							$user = 'root';
+							$password = 'root';
+							$db = 'test';
+							$host = 'localhost';
+							$port = 8889;
+
+							$link = mysqli_init();
+							$success = mysqli_real_connect(
+							   $link, 
+							   $host, 
+							   $user, 
+							   $password, 
+							   $db,
+							   $port
+							);
+		
+							$query  = "INSERT INTO providerCompany(companyName) VALUES ('$myAddprovider')";
+							$result = mysqli_query($link, $query);
+						}
+				?>
+
+
+
 			</div>
 		</div>
 	</div>
