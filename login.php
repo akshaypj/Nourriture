@@ -199,12 +199,11 @@ h5, h1 {
 	<script>
 		$(document).ready(function(){
 			var activeTabIndex = $.cookie("activeTabIndex");
-			console.log(activeTabIndex);
 
 			if(activeTabIndex == 1){
 				$(".rightTab").addClass("active");
 				$("#credentials_member").show();
-				$("#credentials_admin").hide();				
+				$("#credentials_admin").hide();	
 			}			
 			else{
 				$(".leftTab").addClass("active");	
@@ -212,7 +211,6 @@ h5, h1 {
 				$("#credentials_member").hide();								
 			}
 				
-
 			$(".leftTab").click(function(){
 				$("#credentials_admin").show();
 				$("#credentials_member").hide();
@@ -221,7 +219,6 @@ h5, h1 {
 				$.cookie("activeTabIndex", 0);				
 			});
 
-
 			$(".rightTab").click(function(){
 				$("#credentials_member").show();				
 				$("#credentials_admin").hide();	
@@ -229,14 +226,7 @@ h5, h1 {
 				$(".rightTab").addClass("active");				
 				$.cookie("activeTabIndex", 1);
 			});
-
-
 		});
-
-		function jsFunction(){
-
-		}
-
 	</script>
 </head>
 
@@ -324,7 +314,6 @@ h5, h1 {
 									}else{
 										$count =  mysqli_num_rows($result);
 										if($count==1){
-									// Register $myusername, $mypassword and redirect to file "login_success.php"
 											$_SESSION['username'] = $myusername; 
 											$_SESSION['password'] =  $mypassword;
 											echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";	
