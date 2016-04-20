@@ -141,7 +141,6 @@ h5, h1 {
 </head>
 
 <body>
-
 	<header>
         <div id="main-container">
         	<div id="backg" class="header-background">
@@ -230,7 +229,47 @@ h5, h1 {
 			</div>
 			
 			<div id="retrieveContent" class="inactive">
-				AKSHAY JAIN
+				<?php
+		            $user = 'root';
+		            $password = 'root';
+		            $db = 'test';
+		            $host = 'localhost';
+		            $port = 8889;
+		            $link = mysqli_init();
+		            $success = mysqli_real_connect(
+		               $link, 
+		               $host, 
+		               $user, 
+		               $password, 
+		               $db,
+		               $port
+		            );
+		            $query  = "SELECT * FROM example";
+		            $result = mysqli_query($link, $query);
+
+		            echo "<table >
+		            <tr>
+		              <td >Provider </td>
+		              <td >Quantity</td>
+		              <td >Food type</td>
+		              <td >Description</td>
+		              <td >Dates</td>
+		            </tr>";
+
+		            //echo mysqli_num_rows($result);
+
+		            while($row = mysqli_fetch_array($result))
+		            {
+		            echo "<tr>";
+		            echo "<td>".$row['provider']."</td>";
+		            echo "<td>".$row['quantity']."</td>";
+		            echo "<td>".$row['foodtype']."</td>";
+		            echo "<td>".$row['description']."</td>";
+		            echo "<td>".$row['dates']."</td>";
+		            echo "</tr>";
+		            }
+		            echo "</table>";
+				?>  
 			</div>			
 			
 		</div>
@@ -288,8 +327,7 @@ h5, h1 {
 <?php
 if (isset($_POST['Submit'])){ 
 			Insert_Record_func();
-		}
-		
+		}		
 		function Insert_Record_func(){
 			$servername = "localhost";
 			$username = "root";
