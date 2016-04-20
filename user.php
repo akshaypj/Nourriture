@@ -6,7 +6,6 @@ body{
 	margin:0px;
 }
 #form{
-	height: 300px;
     margin: 15px 50px;
 }
 
@@ -168,6 +167,33 @@ h5, h1 {
     width: 100%;
 }
 
+input, .selClass{
+	height: 36px;
+    line-height:30px;
+    outline: none;
+}
+
+ .submit_button_cls{
+	padding: 8px 24px 8px 24px;
+	font-family: -webkit-body;
+	background-color: black;
+	color: white;
+	width: 160px;
+	height: 50px;
+	margin-left: 175px;
+	margin-bottom: 20px;	
+	outline: none;
+	font-size: 16px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.contentDiv{
+	padding: 10px 0px 10px 0px;
+    margin-top: 26px;
+	background-color: white;    
+}	
+
 </style>
 
 
@@ -196,165 +222,149 @@ h5, h1 {
 				</div>
 			</div>
 
-			<div id="addRecordContent">
-				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
-					<div id="form">
-					<div id="success_message" name="success_message"></div>  		    
+			<div class="contentDiv">
+				<div id="addRecordContent">
+					<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
+						<div id="form">
+						<div id="success_message" name="success_message"></div>  		    
 
-						<div id="provider_info">
-							<div class="formatText" id ="provider_name">Provider:</div> 
-							<div class="provideDropdown lowerElement"> 
-								<select id="who" name="whoinuser">
-								<?php
-									$user = 'root';
-									$password = 'root';
-									$db = 'test';
-									$host = 'localhost';
-									$port = 8889;
+							<div id="provider_info">
+								<div class="formatText" id ="provider_name">Provider:</div> 
+								<div class="provideDropdown lowerElement"> 
+									<select id="who" name="whoinuser" class="selClass">
+									<?php
+										$user = 'root';
+										$password = 'root';
+										$db = 'test';
+										$host = 'localhost';
+										$port = 8889;
 
-									$link = mysqli_init();
-									$success = mysqli_real_connect(
-									   $link, 
-									   $host, 
-									   $user, 
-									   $password, 
-									   $db,
-									   $port
-									);
+										$link = mysqli_init();
+										$success = mysqli_real_connect(
+										   $link, 
+										   $host, 
+										   $user, 
+										   $password, 
+										   $db,
+										   $port
+										);
 
-									$query="SELECT companyName FROM providerCompany";
-									$result = mysqli_query($link, $query);
+										$query="SELECT companyName FROM providerCompany";
+										$result = mysqli_query($link, $query);
 
-									while ($row=mysqli_fetch_array($result)) {
-										$Nameselect=$row["companyName"];
-										echo "<option value=$Nameselect> $Nameselect </option>";
-									}
-								?>
-								</select>
+										while ($row=mysqli_fetch_array($result)) {
+											$Nameselect=$row["companyName"];
+											echo "<option value=$Nameselect class='selClass'> $Nameselect </option>";
+										}
+									?>
+									</select>
+								</div>
+
+								<div class="formatText" id ="food_type_name">Food Type:</div>
+								<div><input type="text" id="what" name="whatinuser" class = "whatinuser lowerElement"></div>
+								<div><span id="errorFoodType" class="inactive error">Foodtype cannot be empty</span></div>
+
+								<div class="info_parameter formatText">Quantity:</div>
+								<div><input type="text" id="how_much" class="how_muchinuser lowerElement" name="how_muchinuser" number="true" required></div>
+								<div><span id="errorQuantity" class="inactive error">Enter numbers</span></div>
+
+								<div class="info_parameter formatText">Unit:</div>
+								<div class="info_parameter lowerElement">
+								<select id="unit" name="unit" class="unit" value="Units">
+								  <option value="unit">Units</option>
+								  <option value="kg">Kgs.</option>
+								 </select></div>
+
+								<div class="info_parameter formatText">Description:</div>
+								<div><input class="lowerElement" type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></div>
+
+
+								<div class="info_parameter formatText">Date:</div>
+								<div><input type="date" id="datepicker" class="lowerElement" name="datesinuser"></div>
+
+								<div><input type="submit" class="submit_button_cls" name="Submit_Entry" value="Submit" onclick="validateForm()"></div>
 							</div>
-
-							<div class="formatText" id ="food_type_name">Food Type:</div>
-							<div><input type="text" id="what" name="whatinuser" class = "whatinuser lowerElement"></div>
-							<div><span id="errorFoodType" class="inactive error">Foodtype cannot be empty</span></div>
-
-							<div class="info_parameter formatText">Quantity:</div>
-							<div><input type="text" id="how_much" class="how_muchinuser lowerElement" name="how_muchinuser" number="true" required></div>
-							<div><span id="errorQuantity" class="inactive error">Enter numbers</span></div>
-
-							<div class="info_parameter formatText">Unit:</div>
-							<div class="info_parameter lowerElement">
-							<select id="unit" name="unit" class="unit" value="Units">
-							  <option value="unit">Units</option>
-							  <option value="kg">Kgs.</option>
-							 </select></div>
-
-							<div class="info_parameter formatText">Description:</div>
-							<div><input class="lowerElement" type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></div>
-
-
-							<div class="info_parameter formatText">Date:</div>
-							<div><input type="date" id="datepicker" class="lowerElement" name="datesinuser"></div>
-
-							<div><input type="submit" name="Submit_Entry" value="Submit" onclick="validateForm()"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 						</div>
+					</form>
+					<?php
+							if (isset($_POST['Submit_Entry'])){ //If it is the first time, it does nothing  
+								sel_func();
+							}
+							function sel_func(){
+								$myprovider=htmlspecialchars($_POST['whoinuser']); 
+								$myfoodtype=$_POST['whatinuser']; 
+								$myquantity=$_POST['how_muchinuser'];
+								$myunit=$_POST['unit'];
+								$mydescription=$_POST['descriptioninuser'];
+								$mydate=$_POST['datesinuser'];
 
 
-					</div>
-				</form>
-				<?php
-						if (isset($_POST['Submit_Entry'])){ //If it is the first time, it does nothing  
-							sel_func();
-						}
-						function sel_func(){
-							$myprovider=htmlspecialchars($_POST['whoinuser']); 
-							$myfoodtype=$_POST['whatinuser']; 
-							$myquantity=$_POST['how_muchinuser'];
-							$myunit=$_POST['unit'];
-							$mydescription=$_POST['descriptioninuser'];
-							$mydate=$_POST['datesinuser'];
+								$user = 'root';
+								$password = 'root';
+								$db = 'test';
+								$host = 'localhost';
+								$port = 8889;
 
-
-							$user = 'root';
-							$password = 'root';
-							$db = 'test';
-							$host = 'localhost';
-							$port = 8889;
-
-							$link = mysqli_init();
-							$success = mysqli_real_connect(
-							   $link, 
-							   $host, 
-							   $user, 
-							   $password, 
-							   $db,
-							   $port
-							);
-		 			
-							$query  = "INSERT INTO example(provider,foodtype,quantity,description,dates,units) VALUES('$myprovider','$myfoodtype','$myquantity','$mydescription','$mydate', '$myunit')";
-							$result = mysqli_query($link, $query);
-						}
-				?>
+								$link = mysqli_init();
+								$success = mysqli_real_connect(
+								   $link, 
+								   $host, 
+								   $user, 
+								   $password, 
+								   $db,
+								   $port
+								);
+			 			
+								$query  = "INSERT INTO example(provider,foodtype,quantity,description,dates,units) VALUES('$myprovider','$myfoodtype','$myquantity','$mydescription','$mydate', '$myunit')";
+								$result = mysqli_query($link, $query);
+							}
+					?>
+				</div>
+				
+				<div id="retrieveContent" class="inactive">
+					<?php
+			            $user = 'root';
+			            $password = 'root';
+			            $db = 'test';
+			            $host = 'localhost';
+			            $port = 8889;
+			            $link = mysqli_init();
+			            $success = mysqli_real_connect(
+			               $link, 
+			               $host, 
+			               $user, 
+			               $password, 
+			               $db,
+			               $port
+			            );
+			            $query  = "SELECT * FROM example";
+			            $result = mysqli_query($link, $query);
+			            echo "<table border='1' width='100%' class='retrieveData'>
+			            <tr>
+			              <td height='58' class='tdClassheader'>Provider </td>
+			              <td height='58' class='tdClassheader'>Quantity</td>
+			              <td height='58' class='tdClassheader'>Units</td>
+			              <td height='58' class='tdClassheader'>Food type</td>
+			              <td height='58' class='tdClassheader'>Description</td>
+			              <td height='58' class='tdClassheader'>Dates</td>
+			            </tr>";
+			            while($row = mysqli_fetch_array($result))
+			            {
+			            echo "<tr>";
+			            echo "<td height='58' class='tdClass'>".$row['provider']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['quantity']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['units']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['foodtype']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['description']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['dates']."</td>";
+			            echo "</tr>";
+			            }
+			            echo "</table>";
+					?>  
+				</div>			
 			</div>
-			
-			<div id="retrieveContent" class="inactive">
-				<?php
-		            $user = 'root';
-		            $password = 'root';
-		            $db = 'test';
-		            $host = 'localhost';
-		            $port = 8889;
-		            $link = mysqli_init();
-		            $success = mysqli_real_connect(
-		               $link, 
-		               $host, 
-		               $user, 
-		               $password, 
-		               $db,
-		               $port
-		            );
-		            $query  = "SELECT * FROM example";
-		            $result = mysqli_query($link, $query);
-		            echo "<table border='1' width='100%' class='retrieveData'>
-		            <tr>
-		              <td height='58' class='tdClassheader'>Provider </td>
-		              <td height='58' class='tdClassheader'>Quantity</td>
-		              <td height='58' class='tdClassheader'>Units</td>
-		              <td height='58' class='tdClassheader'>Food type</td>
-		              <td height='58' class='tdClassheader'>Description</td>
-		              <td height='58' class='tdClassheader'>Dates</td>
-		            </tr>";
-		            while($row = mysqli_fetch_array($result))
-		            {
-		            echo "<tr>";
-		            echo "<td height='58' class='tdClass'>".$row['provider']."</td>";
-		            echo "<td height='58' class='tdClass'>".$row['quantity']."</td>";
-		            echo "<td height='58' class='tdClass'>".$row['units']."</td>";
-		            echo "<td height='58' class='tdClass'>".$row['foodtype']."</td>";
-		            echo "<td height='58' class='tdClass'>".$row['description']."</td>";
-		            echo "<td height='58' class='tdClass'>".$row['dates']."</td>";
-		            echo "</tr>";
-		            }
-		            echo "</table>";
-				?>  
-			</div>			
+
+
 			
 		</div>
 	</div>
