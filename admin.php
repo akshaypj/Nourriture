@@ -613,9 +613,14 @@ input, .selClass{
 								<div class="info_parameter formatText">Unit:</div>
 								<div class="info_parameter lowerElement">
 								<select id="unit" name="unit" class="unit" value="Units">
-								  <option value="unit">Units</option>
-								  <option value="kg">Kgs.</option>
-								 </select></div>
+									<option value="gallons">Gallons</option>																	  									
+									<option value="kgs">Kgs</option>									
+									<option value="litres">Litres</option>																	  								  
+									<option value="ounces">Oz</option>																	  
+									<option value="pounds">Lb</option>																	  
+									<option value="units">Units</option>
+								</select>
+								</div>
 
 								<div class="info_parameter formatText">Description:</div>
 								<div><input class="lowerElement" type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></div>

@@ -226,7 +226,7 @@ input, .selClass{
 				<div id="addRecordContent">
 					<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
 						<div id="form">
-						<div id="success_message" name="success_message"></div>  		    
+							<div id="success_message" name="success_message"></div>  		    
 
 							<div id="provider_info">
 								<div class="formatText" id ="provider_name">Provider:</div> 
@@ -271,8 +271,12 @@ input, .selClass{
 								<div class="info_parameter formatText">Unit:</div>
 								<div class="info_parameter lowerElement">
 								<select id="unit" name="unit" class="unit" value="Units">
-								  <option value="unit">Units</option>
-								  <option value="kg">Kgs.</option>
+									<option value="gallons">Gallons</option>																	  									
+									<option value="kgs">Kgs</option>									
+									<option value="litres">Litres</option>																	  								  
+									<option value="ounces">Oz</option>																	  
+									<option value="pounds">Lb</option>																	  
+									<option value="units">Units</option>
 								 </select></div>
 
 								<div class="info_parameter formatText">Description:</div>
