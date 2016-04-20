@@ -89,8 +89,8 @@ h5, h1 {
 
 
 .mainContainer {
-	width: 640px;
-    margin-left: 28%;
+	width: 940px;
+    margin-left: 18%
 }
 
 .section{
@@ -104,18 +104,20 @@ h5, h1 {
     float: left;
 }
 
+
 .titleBlock .section div {
     text-align: center;    
     cursor: pointer;
     display: inline-block;
-    width: 50%;
+    width: 25%;
     padding: 10px 0 17px;
     letter-spacing: .07em;
     text-transform: uppercase;
+    border-right: 2px solid black;
 }
 
 .titleBlock .section div a {
-    font-size: 24px;
+    font-size: 17px;
     padding-bottom: 6px;
     color: black;
     letter-spacing: .07em;
@@ -125,7 +127,7 @@ h5, h1 {
 
 
 .titleBlock .section div.active a {
-    font-size: 24px;
+    font-size: 17px;
     padding-bottom: 6px;
     color: #fff;
     letter-spacing: .07em;
@@ -144,8 +146,6 @@ h5, h1 {
     font-family: Oswald,Helvetica,sans-serif;
 }
 
-
-/* NEW CSS*/
 .user-details{
 	text-align: center;
 	padding-top: 20px;
@@ -204,36 +204,118 @@ hr{
 	width: 150px;
 }
 
+/*ADD A RECORD*/
+
+#provider_info td {
+    padding: 10px;
+}
+
+#provider_info td input, #provider_info td select, #provider_info td textarea {
+    background-color: rgb(202,239,248);
+    border: 1px solid rgb(167, 207, 234);
+}    
+
+.error{
+	font-weight: bold;
+	color: red;
+}
+
+/*END HERE*/
 
 
-/* NEW CSS END*/
+/*Retrieve*/
+
+.tdClass, .tdClassheader {
+    padding-left: 20px;
+    padding-right: 10px;
+    font-family: Oswald,Helvetica,sans-serif;
+    font-size: 13px;
+    color: #000;
+    letter-spacing: .07em;
+    font-weight: 500;
+}
+
+.tdClassheader {
+    font-style: bold;
+    font-weight: 700;
+    font-size: 15px;
+    background-color: #78CEED;
+}
+
+.tableHolder{
+	padding-top:10px;
+}
+
+/*END HERE*/
+
 
 </style>
+
 <head>
   <title>Nourriture</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<script>
-
 		$(document).ready(function(){
+			$('.how_muchinuser').keyup(function () { 
+	   			this.value = this.value.replace(/[^0-9\.]/g,'');
+			});
 
 			$(".leftTab").click(function(){
+				$(".tabContent").hide();				
 				$("#userContent").show();
-				$("#providerContent").hide();
 
+				$(".tabHeader").removeClass("active");				
 				$(".leftTab").addClass("active");
-				$(".rightTab").removeClass("active");				
 			});
-
 
 			$(".rightTab").click(function(){
+				$(".tabContent").hide();					
 				$("#providerContent").show();				
-				$("#userContent").hide();	
 
-				$(".leftTab").removeClass("active");
+				$(".tabHeader").removeClass("active");				
 				$(".rightTab").addClass("active");				
 			});
+
+			$(".tab3").click(function(){
+				$(".tabContent").hide();					
+				$("#addRecord").show();				
+
+				$(".tabHeader").removeClass("active");				
+				$(".tab3").addClass("active");				
+			});
+
+			$(".tab4").click(function(){
+				$(".tabContent").hide();					
+				$("#retrieve").show();				
+
+				$(".tabHeader").removeClass("active");				
+				$(".tab4").addClass("active");				
+			});
 		});
+
+		function validateForm() {
+			//check for food type
+			var x  = $(".whatinuser").val();
+		    if (x == null || x == "") {
+		    	$("#errorFoodType").removeClass("inactive").addClass("active");
+		    }else{
+		    	$("#errorFoodType").removeClass("active").addClass("inactive");	    	
+		    }
+
+		    //check for quantity		
+			var y =  $(".how_muchinuser").val();			
+			if(y == null || y == ""){
+				$("#errorQuantity").removeClass("inactive").addClass("active");
+			}
+			if(!$.isNumeric( x ) || x == null || x == ""){
+				$("#errorQuantity").removeClass("inactive").addClass("active");
+			}
+			else {
+				$("#errorQuantity").removeClass("active").addClass("inactive");	
+			}
+		}	
+
 </script>
 </head>
 
@@ -252,12 +334,15 @@ hr{
 			<div class="titleBlock">
 				<div class="select_title">What do you wish to do</div>
 				<div class="section">
-					<div class="leftTab active"><a>Add/Remove User</a></div>
-					<div class="rightTab"><a>Add/Remove Provider</a></div>
+					<div class="leftTab active tabHeader"><a>Add/Remove User</a></div>
+					<div class="rightTab tabHeader" style="float:left;"><a>Add/Remove Provider</a></div>
+					<div class="tab3 tabHeader" style="float:left;"><a>Add a record</a></div>
+					<div class="tab4 tabHeader"><a>Retrieve</a></div>
+				
 				</div>
 			</div>
 
-			<div id="userContent">
+			<div id="userContent" class="tabContent">
 				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
 					<div class = "user-details">
 					<span id = "insert_user_span">User Name:</span><input type="textbox" id="puser_name" name="user_name"><br>
@@ -268,7 +353,7 @@ hr{
 
 					<div class = "user-details">
 					<span id = "insert_user_span">Select User: </span>
-						<select id="delete_who" name="delete_who">					
+						<select id="delete_who" name="delete_who_user">					
 						 <?php
 									$user = 'root';
 									$password = 'root';
@@ -299,13 +384,13 @@ hr{
 				</div>
 				</form>
 				<?php
-						if (isset($_POST['Delete_User'])){ //If it is the first time, it does nothing  
+						if (isset($_POST['Delete_User'])){  
 							del_func();
 						}else if(isset($_POST['Insert_User'])){
 							add_func();
 						}
 						function del_func(){
-							$myDeluser=$_POST['delete_who']; 
+							$myDeluser=$_POST['delete_who_user']; 
 							$user = 'root';
 							$password = 'root';
 							$db = 'test';
@@ -351,12 +436,11 @@ hr{
 				?>
 			</div>
 
-			<div id="providerContent" class="inactive">
+			<div id="providerContent" class="inactive tabContent">
 				<form method="POST">
 					<div class = "user-details">
 					<span id = "insert_provider_span">Provider Company:</span> <input type="textbox" id="provider_name" name="provider_name"><br>
 					<input type="submit" id="insert_submit" value="Insert" name="Insert_Provider"><br>
-
 					<hr>
 					<span id = "insert_user_span">Select Provider: </span>
 						<select id="delete_who" name="delete_who_provider">
@@ -390,13 +474,137 @@ hr{
 					</div>
 				</form>
 				<?php
-						if (isset($_POST['Delete_Provider'])){ //If it is the first time, it does nothing  
-							del_func_provider();
-						}else if(isset($_POST['Insert_Provider'])){
-							add_func_provider();
+					if (isset($_POST['Delete_Provider'])){ //If it is the first time, it does nothing  
+						del_func_provider();
+					}else if(isset($_POST['Insert_Provider'])){
+						add_func_provider();
+					}
+					function del_func_provider(){
+						$myDelprovider=$_POST['delete_who_provider']; 
+						$user = 'root';
+						$password = 'root';
+						$db = 'test';
+						$host = 'localhost';
+						$port = 8889;
+
+						$link = mysqli_init();
+						$success = mysqli_real_connect(
+						   $link, 
+						   $host, 
+						   $user, 
+						   $password, 
+						   $db,
+						   $port
+						);
+	 			
+						$query  = "DELETE FROM providerCompany WHERE companyName = '$myDelprovider'";
+						$result = mysqli_query($link, $query);
+					}
+
+					function add_func_provider(){
+						$myAddprovider=$_POST['provider_name']; 
+
+						$user = 'root';
+						$password = 'root';
+						$db = 'test';
+						$host = 'localhost';
+						$port = 8889;
+
+						$link = mysqli_init();
+						$success = mysqli_real_connect(
+						   $link, 
+						   $host, 
+						   $user, 
+						   $password, 
+						   $db,
+						   $port
+						);
+	
+						$query  = "INSERT INTO providerCompany(companyName) VALUES ('$myAddprovider')";
+						$result = mysqli_query($link, $query);
+					}
+				?>
+			</div>
+
+			<div id="addRecord" class="inactive tabContent">
+				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
+					<div id="form" class="col-lg-9">
+					<div id="success_message" name="success_message"></div>  		    
+					<table id="provider_info">
+						<tr>
+							<td class="info_parameter">Provider:</td>
+							<td><select id="who" name="whoinuser">
+								<?php
+									$user = 'root';
+									$password = 'root';
+									$db = 'test';
+									$host = 'localhost';
+									$port = 8889;
+
+									$link = mysqli_init();
+									$success = mysqli_real_connect(
+									   $link, 
+									   $host, 
+									   $user, 
+									   $password, 
+									   $db,
+									   $port
+									);
+
+									$query="SELECT companyName FROM providerCompany";
+									$result = mysqli_query($link, $query);
+
+									while ($row=mysqli_fetch_array($result)) {
+										$Nameselect=$row["companyName"];
+										echo "<option value=$Nameselect> $Nameselect </option>";
+									}
+								?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="info_parameter">Food Type:</td>
+							<td><input type="text" id="what" name="whatinuser" class = "whatinuser"></td>
+							<td><span id="errorFoodType" class="inactive error">Foodtype cannot be empty</span></td>
+						</tr>	
+						<tr>	
+							<td class="info_parameter">Quantity:</td>
+							<td><input type="text" id="how_much" class="how_muchinuser" name="how_muchinuser" number="true" required></td>
+							<td><span id="errorQuantity" class="inactive error">Enter numbers</span></td>
+
+							<td class="info_parameter">
+							<select id="unit" name="unit" class="unit" value="Units">
+							  <option value="unit">Units</option>
+							  <option value="kg">Kgs.</option>
+							 </select></td>
+						</tr>
+						<tr>	
+							<td class="info_parameter">Description:</td>
+							<td><input type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></td>
+						</tr>
+						<tr>	
+							<td class="info_parameter">Date:</td>
+							<td><input type="date" id="datepicker" name="datesinuser"></td>
+						</tr>
+						<tr>
+							<td><input type="submit" name="Submit_Entry_Provider" value="Submit" onclick="validateForm()"></td>
+							<td></td>
+						</tr>
+					</table>	
+					</div>
+				</form>
+				<?php
+						if (isset($_POST['Submit_Entry_Provider'])){ 
+							sel_func();
 						}
-						function del_func_provider(){
-							$myDelprovider=$_POST['delete_who_provider']; 
+						function sel_func(){
+							$myprovider=htmlspecialchars($_POST['whoinuser']); 
+							$myfoodtype=$_POST['whatinuser']; 
+							$myquantity=$_POST['how_muchinuser'];
+							$myunit=$_POST['unit'];
+							$mydescription=$_POST['descriptioninuser'];
+							$mydate=$_POST['datesinuser'];
+
 							$user = 'root';
 							$password = 'root';
 							$db = 'test';
@@ -413,146 +621,57 @@ hr{
 							   $port
 							);
 		 			
-							$query  = "DELETE FROM providerCompany WHERE companyName = '$myDelprovider'";
-							$result = mysqli_query($link, $query);
+							$query  = "INSERT INTO example(provider,foodtype,quantity,description,dates,units) VALUES('$myprovider','$myfoodtype','$myquantity','$mydescription','$mydate','$myunit')";
+							$result = mysqli_query($link, $query);													
 						}
-
-						function add_func_provider(){
-							$myAddprovider=$_POST['provider_name']; 
-	
-							$user = 'root';
-							$password = 'root';
-							$db = 'test';
-							$host = 'localhost';
-							$port = 8889;
-
-							$link = mysqli_init();
-							$success = mysqli_real_connect(
-							   $link, 
-							   $host, 
-							   $user, 
-							   $password, 
-							   $db,
-							   $port
-							);
-		
-							$query  = "INSERT INTO providerCompany(companyName) VALUES ('$myAddprovider')";
-							$result = mysqli_query($link, $query);
-						}
-				?>
+				?>				
+			</div>
 
 
-
+			<div id="retrieve" class="inactive tabContent">
+				<div class="tableHolder">
+					<?php
+			            $user = 'root';
+			            $password = 'root';
+			            $db = 'test';
+			            $host = 'localhost';
+			            $port = 8889;
+			            $link = mysqli_init();
+			            $success = mysqli_real_connect(
+			               $link, 
+			               $host, 
+			               $user, 
+			               $password, 
+			               $db,
+			               $port
+			            );
+			            $query  = "SELECT * FROM example";
+			            $result = mysqli_query($link, $query);
+			            echo "<table border='1' width='100%' class='retrieveData'>
+			            <tr>
+			              <td height='58' class='tdClassheader'>Provider </td>
+			              <td height='58' class='tdClassheader'>Quantity</td>
+			              <td height='58' class='tdClassheader'>Units</td>
+			              <td height='58' class='tdClassheader'>Food type</td>
+			              <td height='58' class='tdClassheader'>Description</td>
+			              <td height='58' class='tdClassheader'>Dates</td>
+			            </tr>";
+			            while($row = mysqli_fetch_array($result))
+			            {
+			            echo "<tr>";
+			            echo "<td height='58' class='tdClass'>".$row['provider']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['quantity']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['units']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['foodtype']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['description']."</td>";
+			            echo "<td height='58' class='tdClass'>".$row['dates']."</td>";
+			            echo "</tr>";
+			            }
+			            echo "</table>";
+					?>  
+				</div>
 			</div>
 		</div>
 	</div>
-
-<!-- REMOVE 
-		<div id="form" class="col-lg-9">								
-			<div id="insert_entry">
-				<table id="provider_info_admin">	
-					<tr>
-						<td class="info_parameter">Provider:</td>
-						<td><select id="who" name="who">
-							 <?php
-							  $servername = "localhost";
-							$username = "root";
-							$password = "";
-							$dbname = "test";
-							$conn = mysqli_connect($servername, $username, $password, $dbname);
-							$query="SELECT Name FROM sourcelist";
-							$result=mysqli_query($conn,$query);
-							while ($row=mysqli_fetch_array($result)) {
-								$Nameselect=$row["Name"];
-								echo "<option> $Nameselect </option>";
-								}	
-								?>
-							</select></td>
-					</tr>
-					<tr>
-						<td class="info_parameter">Food Type:</td>
-						<td><input type="text" id="what" name="what"></td>
-					</tr>
-					<tr>	
-						<td class="info_parameter">Quantity:</td>
-						<td><input type="text" id="how_much" name="how_much"></td>
-					</tr>
-					<tr>	
-						<td class="info_parameter">Description:</td>
-						<td><input type="text" id="desc" name="desc"></td>
-					</tr>
-					<tr>	
-						<td class="info_parameter">Date:</td>
-						<td><input type="text" id="datepicker" name="date"></td>
-					</tr>
-					<tr>
-						<td><input type="submit" value="Insert" name="Insert_Record"></td>				
-					</tr>
-				</table>
-			</div>	
-		</div>
-
-TILL HERE -->
-
 </body>
-
-
-
-<?php
-	if (isset($_POST['Insert_Provider'])){ 
-		Insert_Provider_func();
-	}
-	
-	if (isset($_POST['Delete_Provider'])){ 
-				Delete_Provider_func();
-			}
-	
-	if (isset($_POST['Insert_Record'])){ 
-				Insert_Record_func();
-	}
-		
-	function Insert_Record_func(){
-		$servername = "localhost";
-		$username = "root";
-		$password = "";
-		$dbname = "test";
-		$conn = mysqli_connect($servername, $username, $password, $dbname);
-		$nam=$_POST['who'];
-		$foodtype=$_POST['what'];
-		$quant=$_POST['how_much'];
-		$desc=$_POST['desc'];
-		$dates=$_POST['date'];
-		$query3="INSERT INTO example(provider,foodtype,quantity,description,dates) VALUES('$nam','$foodtype','$quant','$desc','$dates')";
-		$result3 = mysqli_query($conn,$query3);
-		//echo "record inserted";
-	}
-	
-	function Delete_Provider_func(){
-		$servername = "localhost";
-		$username = "root";
-		$password = "";
-		$dbname = "test";
-		$conn = mysqli_connect($servername, $username, $password, $dbname);
-		//echo "record deleted";
-		$del=$_POST['delete_who'];
-		$query2="DELETE FROM sourcelist where Name='$del'";
-		$result2 = mysqli_query($conn,$query2);
-	}		
-	function Insert_Provider_func(){
-		$myname = $_POST['provider_name'];
-		if(empty($myname)){
-			echo "You did not fill out the required fields.";
-		}
-		else{
-			$servername = "localhost";
-			$username = "root";
-			$password = "";
-			$dbname = "test";
-			$conn = mysqli_connect($servername, $username, $password, $dbname);	
-			$sql = "INSERT INTO sourcelist VALUES ('$myname')";
-			$result = mysqli_query($conn,$sql);
-			//echo "Provider inserted";
-		}
-	}	
-?>
 </html>

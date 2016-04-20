@@ -278,9 +278,6 @@ h5, h1 {
 		 			
 							$query  = "INSERT INTO example(provider,foodtype,quantity,description,dates,units) VALUES('$myprovider','$myfoodtype','$myquantity','$mydescription','$mydate', '$myunit')";
 							$result = mysqli_query($link, $query);
-							
-							echo htmlspecialchars($myprovider);
-							
 						}
 				?>
 			</div>
@@ -312,9 +309,6 @@ h5, h1 {
 		              <td height='58' class='tdClassheader'>Description</td>
 		              <td height='58' class='tdClassheader'>Dates</td>
 		            </tr>";
-
-		            //echo mysqli_num_rows($result);
-
 		            while($row = mysqli_fetch_array($result))
 		            {
 		            echo "<tr>";
