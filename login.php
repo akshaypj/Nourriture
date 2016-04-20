@@ -193,17 +193,32 @@ h5, h1 {
 <head>
   <title>Nourriture</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="jquery.cookie.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 	<script>
-
 		$(document).ready(function(){
+			var activeTabIndex = $.cookie("activeTabIndex");
+			console.log(activeTabIndex);
+
+			if(activeTabIndex == 1){
+				$(".rightTab").addClass("active");
+				$("#credentials_member").show();
+				$("#credentials_admin").hide();				
+			}			
+			else{
+				$(".leftTab").addClass("active");	
+				$("#credentials_admin").show();
+				$("#credentials_member").hide();								
+			}
+				
 
 			$(".leftTab").click(function(){
 				$("#credentials_admin").show();
 				$("#credentials_member").hide();
 				$(".leftTab").addClass("active");
 				$(".rightTab").removeClass("active");				
+				$.cookie("activeTabIndex", 0);				
 			});
 
 
@@ -212,8 +227,15 @@ h5, h1 {
 				$("#credentials_admin").hide();	
 				$(".leftTab").removeClass("active");
 				$(".rightTab").addClass("active");				
+				$.cookie("activeTabIndex", 1);
 			});
+
+
 		});
+
+		function jsFunction(){
+
+		}
 
 	</script>
 </head>
@@ -235,14 +257,14 @@ h5, h1 {
 			<div class="titleBlock">
 				<div class="select_title">Register As</div>
 				<div class="sectionion">
-					<div class="leftTab active"><a>Administrator</a></div>
-					<div class="rightTab"><a>Staff Member</a></div>
+					<div class="leftTab inactive"><a>Administrator</a></div>
+					<div class="rightTab inactive"><a>Staff Member</a></div>
 				</div>
 			</div>
 
 			<div class="content">
 
-				<div id="credentials_admin" class="contentDiv">
+				<div id="credentials_admin" class="contentDiv inactive">
 					<form id = "adminForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']?>" > 
 						<input name="identity" value="admin" hidden>
 						<div id="name">
@@ -342,52 +364,52 @@ h5, h1 {
 					</form>
 
 					<?php
-						if (isset($_POST['Submit2'])){ //If it is the first time, it does nothing  
+						if (isset($_POST['Submit2'])){ 
 							sel();
 						}
 						function sel(){
 							$myusername=$_POST['member_username']; 
 							$mypassword=$_POST['member_password']; 
-								if(empty($myusername) || empty($mypassword)){
-									echo "You did not fill out the required fields.";
-								}
-								else{
-									$user = 'root';
-									$password = 'root';
-									$db = 'test';
-									$host = 'localhost';
-									$port = 8889;
-
-									$link = mysqli_init();
-									$success = mysqli_real_connect(
-									   $link, 
-									   $host, 
-									   $user, 
-									   $password, 
-									   $db,
-									   $port
-									);
-				 			
-									$query  = "SELECT * FROM user WHERE username = '$myusername' and password = '$mypassword'";
-									$result = mysqli_query($link, $query);
-
-									if(!$result){
-				    					die('There was an error running the query [' . $dbb->error . ']');
-									}else{
-										$count =  mysqli_num_rows($result);
-										if($count==1){
-									// Register $myusername, $mypassword and redirect to file "login_success.php"
-											$_SESSION['username'] = $myusername; 
-											$_SESSION['password'] =  $mypassword;
-											echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
-										}else {
-											echo "Wrong Username or Password, try again";
-								}
+							if(empty($myusername) || empty($mypassword)){
+								echo "You did not fill out the required fields.";
 							}
-								$mysqli->close();
-						}		
-					}
-				?>
+							else{
+								$user = 'root';
+								$password = 'root';
+								$db = 'test';
+								$host = 'localhost';
+								$port = 8889;
+
+								$link = mysqli_init();
+								$success = mysqli_real_connect(
+								   $link, 
+								   $host, 
+								   $user, 
+								   $password, 
+								   $db,
+								   $port
+								);
+			 			
+								$query  = "SELECT * FROM user WHERE username = '$myusername' and password = '$mypassword'";
+								$result = mysqli_query($link, $query);
+
+								if(!$result){
+			    					die('There was an error running the query [' . $dbb->error . ']');
+								}else{
+									$count =  mysqli_num_rows($result);
+									echo $count;
+									if($count==1){
+										$_SESSION['username'] = $myusername; 
+										$_SESSION['password'] =  $mypassword;
+										echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
+									}else {
+										echo "Wrong Username or Password, try again";
+									}
+								}
+							$mysqli->close();
+							}		
+						}
+					?>
 				</div>
 			</div>
 		</div>
