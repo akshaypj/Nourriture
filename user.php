@@ -131,6 +131,27 @@ h5, h1 {
     display: inline-block;
 }
 
+.tdClass, .tdClassheader{
+	padding-left: 20px;
+	padding-right: 10px;
+	font-family: Oswald,Helvetica,sans-serif;
+	font-size: 13px;
+    color: #000;
+    letter-spacing: .07em;
+    font-weight: 500;
+}
+
+.tdClassheader{
+	font-style: bold;
+	font-weight: 700;
+	font-size: 15px;
+	background-color: #78CEED;
+}
+
+.retrieveData{
+	margin-top: 30px;
+}
+
 </style>
 
 
@@ -160,7 +181,7 @@ h5, h1 {
 			</div>
 
 			<div id="addRecordContent">
-				<form method="POST">
+				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
 					<div id="form" class="col-lg-9">
 					<div id="success_message" name="success_message"></div>  		    
 					<table id="provider_info">
@@ -220,12 +241,48 @@ h5, h1 {
 							<td><input type="date" id="datepicker" name="datesinuser"></td>
 						</tr>
 						<tr>
-							<td><input type="submit" name="Submit" value="Submit" onclick="validateForm()"></td>
+							<td><input type="submit" name="Submit_Entry" value="Submit" onclick="validateForm()"></td>
 							<td></td>
 						</tr>
 					</table>	
 					</div>
 				</form>
+				<?php
+						if (isset($_POST['Submit_Entry'])){ //If it is the first time, it does nothing  
+							sel_func();
+						}
+						function sel_func(){
+							$myprovider=htmlspecialchars($_POST['whoinuser']); 
+							$myfoodtype=$_POST['whatinuser']; 
+							$myquantity=$_POST['how_muchinuser'];
+							$myunit=$_POST['unit'];
+							$mydescription=$_POST['descriptioninuser'];
+							$mydate=$_POST['datesinuser'];
+
+
+							$user = 'root';
+							$password = 'root';
+							$db = 'test';
+							$host = 'localhost';
+							$port = 8889;
+
+							$link = mysqli_init();
+							$success = mysqli_real_connect(
+							   $link, 
+							   $host, 
+							   $user, 
+							   $password, 
+							   $db,
+							   $port
+							);
+		 			
+							$query  = "INSERT INTO example(provider,foodtype,quantity,description,dates,units) VALUES('$myprovider','$myfoodtype','$myquantity','$mydescription','$mydate', '$myunit')";
+							$result = mysqli_query($link, $query);
+							
+							echo htmlspecialchars($myprovider);
+							
+						}
+				?>
 			</div>
 			
 			<div id="retrieveContent" class="inactive">
@@ -246,14 +303,14 @@ h5, h1 {
 		            );
 		            $query  = "SELECT * FROM example";
 		            $result = mysqli_query($link, $query);
-
-		            echo "<table >
+		            echo "<table border='1' width='100%' class='retrieveData'>
 		            <tr>
-		              <td >Provider </td>
-		              <td >Quantity</td>
-		              <td >Food type</td>
-		              <td >Description</td>
-		              <td >Dates</td>
+		              <td height='58' class='tdClassheader'>Provider </td>
+		              <td height='58' class='tdClassheader'>Quantity</td>
+		              <td height='58' class='tdClassheader'>Units</td>
+		              <td height='58' class='tdClassheader'>Food type</td>
+		              <td height='58' class='tdClassheader'>Description</td>
+		              <td height='58' class='tdClassheader'>Dates</td>
 		            </tr>";
 
 		            //echo mysqli_num_rows($result);
@@ -261,11 +318,12 @@ h5, h1 {
 		            while($row = mysqli_fetch_array($result))
 		            {
 		            echo "<tr>";
-		            echo "<td>".$row['provider']."</td>";
-		            echo "<td>".$row['quantity']."</td>";
-		            echo "<td>".$row['foodtype']."</td>";
-		            echo "<td>".$row['description']."</td>";
-		            echo "<td>".$row['dates']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['provider']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['quantity']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['units']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['foodtype']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['description']."</td>";
+		            echo "<td height='58' class='tdClass'>".$row['dates']."</td>";
 		            echo "</tr>";
 		            }
 		            echo "</table>";
@@ -322,26 +380,5 @@ h5, h1 {
 			$("#errorQuantity").removeClass("active").addClass("inactive");	
 		}
 	}			
-</script>
-
-<?php
-if (isset($_POST['Submit'])){ 
-			Insert_Record_func();
-		}		
-		function Insert_Record_func(){
-			$servername = "localhost";
-			$username = "root";
-			$password = "";
-			$dbname = "test";
-			$conn = mysqli_connect($servername, $username, $password, $dbname);
-			$nam=$_POST['whoinuser'];
-			$foodtype=$_POST['whatinuser'];
-			$quant=$_POST['how_muchinuser'];
-			$desc=$_POST['descriptioninuser'];
-			$dates=$_POST['datesinuser'];
-			$query3="INSERT INTO example(provider,foodtype,quantity,description,dates) VALUES('$nam','$foodtype','$quant','$desc','$dates')";
-			$result3 = mysqli_query($conn,$query3);
-		}
-?>
-					
+</script>					
 </html>
