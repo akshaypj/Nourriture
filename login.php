@@ -50,6 +50,14 @@ body{
     color:red;	
 }
 
+.error_invalidinput_bottom{
+	font-size: 14px;
+    font-family: -webkit-body;
+    padding-bottom: 12px;
+    color:red;	
+    text-align: center;
+}
+
 .sectionion div.active {
     background-color: #000;
 }
@@ -156,7 +164,7 @@ body{
 	color: white;
 	width: 160px;
 	height: 50px;
-	margin-bottom: 40px;	
+	margin-bottom: 20px;	
 	outline: none;
 	font-size: 16px;
 	font-weight: 700;
@@ -220,8 +228,31 @@ h5, h1 {
 				$(".leftTab").removeClass("active");
 				$(".rightTab").addClass("active");				
 				$.cookie("activeTabIndex", 1);
-			});
+			});						
 		});
+
+	function validateForm_login() {
+		//check for food type
+		var x  = $(".whatinuser").val();
+	    if (x == null || x == "") {
+	    	$("#errorFoodType").removeClass("inactive").addClass("active");
+	    }else{
+	    	$("#errorFoodType").removeClass("active").addClass("inactive");	    	
+	    }
+
+	    //check for quantity		
+		var y =  $(".how_muchinuser").val();			
+		if(y == null || y == ""){
+			$("#errorQuantity").removeClass("inactive").addClass("active");
+		}
+		if(!$.isNumeric( x ) || x == null || x == ""){
+			$("#errorQuantity").removeClass("inactive").addClass("active");
+		}
+		else {
+			$("#errorQuantity").removeClass("active").addClass("inactive");	
+		}
+	}
+
 	</script>
 </head>
 
@@ -258,7 +289,7 @@ h5, h1 {
 						</div>
 						<div id="password">
 							<div class="formatText"  id ="password_span">Password: </div>
-							<input class= "formatInput" type="textbox" id="admin_password_input" name="admin_password">
+							<input class= "formatInput" type="password" id="admin_password_input" name="admin_password">
 						</div>
 
 						<div id="submitHolder">
@@ -273,45 +304,45 @@ h5, h1 {
 						function sel2(){
 							$myusername=$_POST['admin_username']; 
 							$mypassword=$_POST['admin_password']; 
-								if(empty($myusername) || empty($mypassword)){
-									echo "You did not fill out the required fields.";
-								}
-								else{
-									$user = 'root';
-									$password = 'root';
-									$db = 'test';
-									$host = 'localhost';
-									$port = 8889;
-
-									$link = mysqli_init();
-									$success = mysqli_real_connect(
-									   $link, 
-									   $host, 
-									   $user, 
-									   $password, 
-									   $db,
-									   $port
-									);
-				 			
-									$query  = "SELECT * FROM credential WHERE username = '$myusername' and password = '$mypassword'";
-									$result = mysqli_query($link, $query);
-
-									if(!$result){
-				    					die('There was an error running the query [' . $dbb->error . ']');
-									}else{
-										$count =  mysqli_num_rows($result);
-										if($count==1){
-											$_SESSION['username'] = $myusername; 
-											$_SESSION['password'] =  $mypassword;
-											echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";	
-										}else {
-											echo "Wrong Username or Password, try again";
-								}
+							if(empty($myusername) || empty($mypassword)){
+								echo "<div class='error_invalidinput_bottom active'> Please fill in Username and Password both</div>";
 							}
-								$mysqli->close();
-						}		
-					}
-				?>
+							else{
+								$user = 'root';
+								$password = 'root';
+								$db = 'test';
+								$host = 'localhost';
+								$port = 8889;
+
+								$link = mysqli_init();
+								$success = mysqli_real_connect(
+								   $link, 
+								   $host, 
+								   $user, 
+								   $password, 
+								   $db,
+								   $port
+								);
+			 			
+								$query  = "SELECT * FROM credential WHERE username = '$myusername' and password = '$mypassword'";
+								$result = mysqli_query($link, $query);
+
+								if(!$result){
+			    					die('There was an error running the query [' . $dbb->error . ']');
+								}else{
+									$count =  mysqli_num_rows($result);
+									if($count==1){
+										$_SESSION['username'] = $myusername; 
+										$_SESSION['password'] =  $mypassword;
+										echo "<script type='text/javascript'> document.location = 'admin.php'; </script>";	
+									}else {
+										echo "<div class='error_invalidinput_bottom active'> Wrong Username or Password, try again</div>";
+									}
+								}
+//							$mysqli->close();
+							}		
+						}
+					?>
 				</div>
 
 				<div id="credentials_member" class="contentDiv inactive">
@@ -323,7 +354,7 @@ h5, h1 {
 						</div>
 						<div id="password">
 							<div class="formatText"  id ="password_span">Password: </div>
-							<input class= "formatInput" type="textbox" id="member_password_input" name="member_password">
+							<input class= "formatInput" type="password" id="member_password_input" name="member_password">
 						</div>
 										
 						<div id="submitHolder">
@@ -339,7 +370,7 @@ h5, h1 {
 							$myusername=$_POST['member_username']; 
 							$mypassword=$_POST['member_password']; 
 							if(empty($myusername) || empty($mypassword)){
-								echo "You did not fill out the required fields.";
+								echo "<div class='error_invalidinput_bottom active'> Please fill in Username and Password both</div>";
 							}
 							else{
 								$user = 'root';
@@ -365,13 +396,12 @@ h5, h1 {
 			    					die('There was an error running the query [' . $dbb->error . ']');
 								}else{
 									$count =  mysqli_num_rows($result);
-									echo $count;
 									if($count==1){
 										$_SESSION['username'] = $myusername; 
 										$_SESSION['password'] =  $mypassword;
 										echo "<script type='text/javascript'> document.location = 'user.php'; </script>";
 									}else {
-										echo "Wrong Username or Password, try again";
+										echo "<div class='error_invalidinput_bottom active'> Wrong Username or Password, try again</div>";
 									}
 								}
 							$mysqli->close();
@@ -379,8 +409,10 @@ h5, h1 {
 						}
 					?>
 				</div>
+
 			</div>
 		</div>
 	</div>
+
 </body>
 </html>
