@@ -6,8 +6,8 @@ body{
 	margin:0px;
 }
 #form{
-    height: 300px;
-    margin: 15px;
+	height: 300px;
+    margin: 15px 50px;
 }
 
 #provider_info td{
@@ -33,6 +33,7 @@ body{
 .error{
 	font-weight: bold;
 	color: red;
+	margin-bottom:20px;
 }
 
 .active{
@@ -152,6 +153,21 @@ h5, h1 {
 	margin-top: 30px;
 }
 
+.formatText{
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.lowerElement{
+	margin-bottom: 18px;
+	width:100%;
+}
+
+#who, #unit{
+    width: 100%;
+}
+
 </style>
 
 
@@ -182,12 +198,13 @@ h5, h1 {
 
 			<div id="addRecordContent">
 				<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
-					<div id="form" class="col-lg-9">
+					<div id="form">
 					<div id="success_message" name="success_message"></div>  		    
-					<table id="provider_info">
-						<tr>
-							<td class="info_parameter">Provider:</td>
-							<td><select id="who" name="whoinuser">
+
+						<div id="provider_info">
+							<div class="formatText" id ="provider_name">Provider:</div> 
+							<div class="provideDropdown lowerElement"> 
+								<select id="who" name="whoinuser">
 								<?php
 									$user = 'root';
 									$password = 'root';
@@ -214,37 +231,52 @@ h5, h1 {
 									}
 								?>
 								</select>
-							</td>
-						</tr>
-						<tr>
-							<td class="info_parameter">Food Type:</td>
-							<td><input type="text" id="what" name="whatinuser" class = "whatinuser"></td>
-							<td><span id="errorFoodType" class="inactive error">Foodtype cannot be empty</span></td>
-						</tr>	
-						<tr>	
-							<td class="info_parameter">Quantity:</td>
-							<td><input type="text" id="how_much" class="how_muchinuser" name="how_muchinuser" number="true" required></td>
-							<td><span id="errorQuantity" class="inactive error">Enter numbers</span></td>
+							</div>
 
-							<td class="info_parameter">
+							<div class="formatText" id ="food_type_name">Food Type:</div>
+							<div><input type="text" id="what" name="whatinuser" class = "whatinuser lowerElement"></div>
+							<div><span id="errorFoodType" class="inactive error">Foodtype cannot be empty</span></div>
+
+							<div class="info_parameter formatText">Quantity:</div>
+							<div><input type="text" id="how_much" class="how_muchinuser lowerElement" name="how_muchinuser" number="true" required></div>
+							<div><span id="errorQuantity" class="inactive error">Enter numbers</span></div>
+
+							<div class="info_parameter formatText">Unit:</div>
+							<div class="info_parameter lowerElement">
 							<select id="unit" name="unit" class="unit" value="Units">
 							  <option value="unit">Units</option>
 							  <option value="kg">Kgs.</option>
-							 </select></td>
-						</tr>
-						<tr>	
-							<td class="info_parameter">Description:</td>
-							<td><input type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></td>
-						</tr>
-						<tr>	
-							<td class="info_parameter">Date:</td>
-							<td><input type="date" id="datepicker" name="datesinuser"></td>
-						</tr>
-						<tr>
-							<td><input type="submit" name="Submit_Entry" value="Submit" onclick="validateForm()"></td>
-							<td></td>
-						</tr>
-					</table>	
+							 </select></div>
+
+							<div class="info_parameter formatText">Description:</div>
+							<div><input class="lowerElement" type="textarea" id="desc" name="descriptioninuser" rows="4" cols="20"></div>
+
+
+							<div class="info_parameter formatText">Date:</div>
+							<div><input type="date" id="datepicker" class="lowerElement" name="datesinuser"></div>
+
+							<div><input type="submit" name="Submit_Entry" value="Submit" onclick="validateForm()"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						</div>
+
+
 					</div>
 				</form>
 				<?php
