@@ -32,11 +32,6 @@ body{
 	margin: 0px 0px 20px 0px;
 }
 
-#password_span, #name_span, #captcha_span{
-	font-family: -webkit-body;
-    font-size: 18px;
-}
-
 #username, #password_input{
   background-color: rgb(202,239,248);
   border: 1px solid rgb(167, 207, 234);
@@ -266,14 +261,6 @@ h5, h1 {
 							<input class= "formatInput" type="textbox" id="admin_password_input" name="admin_password">
 						</div>
 
-						<div id ="cap">
-							<div class="formatText" id="captcha_span">Enter Image Text: </div>
-							<input class= "formatInput" name="captcha" type="textbox">
-							<br>
-							<br>
-							<img style="float: right;" src="captcha.php" /><br>
-						</div>
-
 						<div id="submitHolder">
 							<input id ="admin_submit_button" type="submit" name="Submit1" value="LOGIN">
 						</div> 
@@ -338,15 +325,7 @@ h5, h1 {
 							<div class="formatText"  id ="password_span">Password: </div>
 							<input class= "formatInput" type="textbox" id="member_password_input" name="member_password">
 						</div>
-						
-						<div id ="cap">
-							<div class="formatText" id="captcha_span">Enter Image Text: </div>
-							<input class= "formatInput" name="captcha" type="textbox">
-							<br>
-							<br>
-							<img style="float: right;" src="captcha.php" /><br>
-						</div>
-
+										
 						<div id="submitHolder">
 							<input id ="member_submit_button" type="submit" name="Submit2" value="LOGIN">
 						</div> 
